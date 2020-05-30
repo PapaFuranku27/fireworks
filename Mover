@@ -1,0 +1,35 @@
+class Mover {
+  PVector position, velocity, acceleration;
+  float lifeSpan, mass, initialLife, detriment;
+  
+  Mover(PVector position, float mass, float lifeSpan, float detriment) {
+    this.position = position.copy();
+    this.mass = mass;
+    this.lifeSpan = lifeSpan;
+    this.detriment = detriment;
+    
+    initialLife = lifeSpan;
+    velocity = new PVector();
+    acceleration = new PVector();
+  }
+  
+  void run() {
+    move();
+    lifeSpan -= detriment;
+  }
+  
+  void move() {
+    velocity.add(acceleration);
+    position.add(velocity);
+    
+    acceleration.mult(0);
+  }
+  
+  void applyForce(PVector force) {
+    acceleration.add(force.copy().div(mass));
+  }
+  
+  boolean isDead() {
+    return lifeSpan < 0;
+  }
+};
