@@ -1,0 +1,27 @@
+ArrayList<Rocket> roses;
+
+void setup() {
+  fullScreen();
+  
+  roses = new ArrayList<Rocket>();
+}
+
+void draw() {
+  background(10);
+    
+  for (Rocket rose: roses)
+    rose.run();
+    
+  if (random(1) < .03) {
+    keyCode = UP;
+    keyPressed();
+    keyCode = DOWN;
+  }
+}
+
+void keyPressed() {
+  if (keyCode == UP) {
+    Rocket rose = new Rocket(new PVector(width / 2, height), 23, random(150, 200), 1);
+    roses.add(rose);
+  }
+}
