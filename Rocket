@@ -1,0 +1,84 @@
+class Rocket extends Mover {
+  ParticleSystem parts, payLoad;
+  float rockQ, rockL, xImp, yImp;
+  boolean loaded;
+  PVector gravity;
+  
+  Rocket(PVector position, float mass, float lifeSpan, float detriment) {
+    super(position, mass, lifeSpan, detriment);
+    rockQ = 8;
+    rockL = 32;
+    loaded = false;
+    gravity = new PVector(0, .1);
+    
+    xImp = random(100);
+    yImp = random(100);
+    
+    parts = new ParticleSystem(new PVector(position.x, position.y - rockL));
+  }
+  
+  @Override
+  void run() {
+    parts.run();
+    if (!isDead()) {
+      super.run();
+      impulse();
+      show();
+      fuwa();
+    }
+    else {
+      if (!loaded)
+        load();
+      else {
+        payLoad.run();
+        payLoad.applyForce(gravity);
+      }
+    }
+  }
+  
+  void show() {
+    pushMatrix();
+    
+    translate(position.x, position.y);
+    rotate(velocity.heading());
+    rectMode(CENTER);
+    fill(250, 50, 100);
+    rect(0, 0, rockL, rockQ);
+    
+    popMatrix();
+  }
+  
+  void fuwa() {    
+    for (int i = 0; i < 5; i++) {
+      Circle circus = new Circle(parts.position, 2, random(15, 25), random(1, 1.5));
+      PVector force = velocity.copy();
+      force.normalize();
+      force.mult(-5);
+      circus.applyForce(force);
+      
+      parts.addParticle(circus);
+    }
+    
+    PVector direction = PVector.fromAngle(velocity.heading());
+    parts.position = PVector.sub(position, direction);
+  }
+  
+  void load() {
+    payLoad = new ParticleSystem(position);
+    loaded = true;
+    
+    for (int i = 0; i < 100; i++) {
+      Spark spk = new Spark(position, 3, random(50, 100), random(1, 2));
+      PVector force = PVector.fromAngle(random(2 * PI));
+      force.mult(random(5, 10));
+      spk.applyForce(force);
+      payLoad.addParticle(spk);
+    }
+  }
+  
+  void impulse() {
+    applyForce(new PVector(map(noise(xImp), 0, 1, -1, 1), map(noise(yImp), 0, 1, -1, .1)));
+    xImp += .01;
+    yImp += .01;
+  }
+};
