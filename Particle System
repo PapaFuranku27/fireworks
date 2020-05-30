@@ -1,0 +1,32 @@
+import java.util.Iterator;
+
+class ParticleSystem {
+  ArrayList<Mover> parts;
+  PVector position;
+  
+  ParticleSystem(PVector position) {
+    parts = new ArrayList<Mover>();
+    this.position = position.copy();
+  }
+  
+  void addParticle(Mover moe) {
+    parts.add(moe);  
+  }
+  
+  void run() {
+    Iterator<Mover> iter = parts.iterator();
+    
+    while (iter.hasNext()) {
+      Mover moe = iter.next();
+      
+      moe.run();
+      if (moe.isDead())
+        iter.remove();
+    }
+  }
+  
+  void applyForce(PVector force) {
+    for (Mover moe : parts)
+      moe.applyForce(force);
+  }
+};
