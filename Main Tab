@@ -11,12 +11,6 @@ void draw() {
     
   for (Rocket rose: roses)
     rose.run();
-    
-  if (random(1) < .03) {
-    keyCode = UP;
-    keyPressed();
-    keyCode = DOWN;
-  }
 }
 
 void keyPressed() {
