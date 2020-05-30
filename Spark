@@ -1,0 +1,23 @@
+class Spark extends Circle {
+  Spark(PVector position, float mass, float lifeSpan, float detriment) {
+    super(position, mass, lifeSpan, detriment);
+  }
+  
+  @Override
+  void run() { 
+    super.run();
+    show();
+  }
+  
+  @Override
+  void show() {
+    pushStyle();
+    
+    colorMode(HSB);
+    fill(map(lifeSpan, 0, initialLife, 0, 255), 255, 255, map(lifeSpan, 0, initialLife, 0, 255));
+    noStroke();
+    ellipse(position.x, position.y, radius * 2, radius * 2);
+    
+    popStyle();
+  }
+};
