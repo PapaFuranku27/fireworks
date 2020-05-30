@@ -1,0 +1,40 @@
+class Circle extends Mover {
+  float radius;
+  
+  Circle(PVector position, float mass, float lifeSpan, float detriment) {
+    super(position, mass, lifeSpan, detriment);
+    radius = mass;
+  }
+  
+  @Override
+  void run() {
+    super.run();
+    show();
+    edges();
+  }
+  
+  void show() {
+    fill(255, map(lifeSpan, 0, initialLife, 0, 255));
+    noStroke();
+    ellipse(position.x, position.y, radius * 2, radius * 2);
+  }
+  
+  void edges() {
+    if (position.x < radius || width - radius < position.x) {
+      velocity.x *= -1;
+      
+      if (position.x < radius)
+        position.x = radius;
+      else
+        position.x = width - radius;
+    }
+    if (position.y < radius || height - radius < position.y) {
+      velocity.y *= -1;
+      
+      if (position.y < radius)
+        position.y = radius;
+      else
+        position.y = height - radius;
+    }
+  }
+};
